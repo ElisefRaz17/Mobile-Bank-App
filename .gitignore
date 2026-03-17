@@ -51,6 +51,7 @@ __pycache__/
 *.egg-info/
 *.egg
 server/venv/
+server/.venv/
 venv/
 .venv/
 .pytest_cache/

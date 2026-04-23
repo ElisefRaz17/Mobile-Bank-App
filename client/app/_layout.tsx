@@ -1,24 +1,25 @@
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
-import { Stack } from 'expo-router';
-import { StatusBar } from 'expo-status-bar';
-import 'react-native-reanimated';
-
-import { useColorScheme } from '@/hooks/use-color-scheme';
-
-export const unstable_settings = {
-  anchor: '(tabs)',
-};
+import { useEffect } from 'react';
+import { Slot } from 'expo-router';
+import { AuthProvider } from './auth/AuthContext';
+import { Amplify } from 'aws-amplify';
+import awsConfig from "../aws-exports";
+import {useFonts} from 'expo-font';
+import * as SplashScreen from 'expo-splash-screen';
 
 export default function RootLayout() {
-  const colorScheme = useColorScheme();
-
+   SplashScreen.preventAutoHideAsync();
+  Amplify.configure(awsConfig);
+    const [loaded, error] = useFonts({
+    'Inter': require('../assets/fonts/Inter-VariableFont_opsz,wght.ttf')
+  });
+    useEffect(() => {
+    if (loaded || error) {
+      SplashScreen.hideAsync();
+    }
+  }, [loaded, error]);
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="modal" options={{ presentation: 'modal', title: 'Modal' }} />
-      </Stack>
-      <StatusBar style="auto" />
-    </ThemeProvider>
+    <AuthProvider>
+      <Slot />
+    </AuthProvider>
   );
 }

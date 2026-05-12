@@ -1,14 +1,9 @@
 import AccountCard from "@/components/ui/accountcard";
 import TransactionDisplay from "@/components/ui/transactiondisplay";
+import { fetchUserAttributes } from "aws-amplify/auth";
 import { router } from "expo-router";
 import { useEffect, useState } from "react";
-import {
-  Image,
-  Pressable,
-  ScrollView,
-  StyleSheet,
-  Text
-} from "react-native";
+import { Image, Pressable, ScrollView, StyleSheet, Text } from "react-native";
 import Toast from "react-native-toast-message";
 import { useAuth } from "../features/auth/AuthContext";
 import { getUsersAccounts } from "../services/accountService";
@@ -22,6 +17,7 @@ const MainScreen = () => {
   const { user } = useAuth();
   const [accounts, setAccounts] = useState<any[]>([]);
   const [transactions, setTransactions] = useState<any[]>([]);
+  const [userName, setUsername] = useState<string | undefined>();
   const buttonData = [
     {
       name: "Income",
@@ -42,6 +38,18 @@ const MainScreen = () => {
       className: "expenseButton",
     },
   ];
+  useEffect(() => {
+    const fetchUserDetails = async () => {
+      try {
+        const userDetails = await fetchUserAttributes();
+        setUsername(userDetails?.name);
+      } catch (err) {
+        setUsername("");
+        Toast.show({ type: "error", text1: `${err}` });
+      }
+    };
+    fetchUserDetails();
+  }, []);
   useEffect(() => {
     const fetchUserAccounts = async () => {
       try {
@@ -67,12 +75,15 @@ const MainScreen = () => {
     };
     fetchUserTransactions();
   }, [user?.userId]);
+
   if (accounts.length > 0) {
     return (
       <ScrollView style={[styles.container]}>
         <div style={styles.mainContainer}>
           <div style={styles.header}>
-            <Text style={styles.headerTitle}>Hi, {user?.username}</Text>
+            <Text style={styles.headerTitle}>
+              Hi, {userName?.split(" ")[0]}
+            </Text>
             <Image source={require("../../assets/images/bell-icon.png")} />
           </div>
           <AccountCard accounts={accounts} />

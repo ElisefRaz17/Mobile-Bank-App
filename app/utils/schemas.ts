@@ -4,8 +4,8 @@ const passwordRegex =
 export const loginSchema = z.object({
   username: z
     .string()
-    .min(2, "Username must be at least 2 characters")
-    .regex(/^[a-zA-Z0-9]+$/),
+    .email("Invalid email format")
+    .min(1, "Email is required"),
   password: z
     .string()
     .regex(
@@ -15,10 +15,7 @@ export const loginSchema = z.object({
 });
 export const registerSchema = z
   .object({
-    name: z
-      .string()
-      .min(2, "Username must be at least 2 characters")
-      .regex(/^[a-zA-Z0-9]+$/),
+    name: z.string().min(2, "Name must be at least 2 characters"),
     email: z.string().email("Invalid email format").min(1, "Email is required"),
     address: z.string().min(1, "Address is required"),
     phoneNumber: z.string().min(1, "Phone number is required"),

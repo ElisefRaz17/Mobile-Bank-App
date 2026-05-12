@@ -23,7 +23,7 @@ const RegisterScreen = () => {
     formState: { errors },
   } = useForm({
     resolver: zodResolver(registerSchema),
-    mode: "onBlur",
+    mode: "onChange",
     defaultValues: {
       name: "",
       email: "",
@@ -37,7 +37,7 @@ const RegisterScreen = () => {
   const handleRegister = async (data: RegisterFormValues) => {
     try {
       await signUp({
-        username: data.name,
+        username: data.email,
         password: data.password,
         options: {
           userAttributes: {
@@ -50,8 +50,8 @@ const RegisterScreen = () => {
         },
       });
       Alert.alert("Success", `We've sent a confirmation code to ${data.email}`);
-      const name = data.name;
-      router.push({ pathname: "/(auth)/confirm", params: { name } });
+      const email = data.email;
+      router.push({ pathname: "/(auth)/confirm", params: { email } });
     } catch (error: any) {
       Alert.alert("Error", error.message);
     }
@@ -73,7 +73,7 @@ const RegisterScreen = () => {
           render={({ field: { onChange, onBlur, value } }) => (
             <TextInput
               style={[styles.input, errors.name && styles.errorInput]}
-              placeholder="Name"
+              placeholder="Full Name"
               value={value}
               onChangeText={onChange}
               onBlur={onBlur}

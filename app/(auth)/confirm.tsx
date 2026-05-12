@@ -1,18 +1,18 @@
+import Button from "@/components/ui/button";
 import { confirmSignUp } from "@aws-amplify/auth";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { useState } from "react";
-import { Alert, Button, Pressable, StyleSheet, Text, TextInput, View } from "react-native";
-
+import { Alert, StyleSheet, Text, TextInput, View } from "react-native";
 
 const ConfirmEmail = () => {
-  const { name } = useLocalSearchParams<{ name: string }>();
+  const { email } = useLocalSearchParams<{ email: string }>();
   const [confirmationCode, setConfirmationCode] = useState("");
   const router = useRouter();
 
   const handleConfirm = async () => {
     try {
       await confirmSignUp({
-        username: name,
+        username: email,
         confirmationCode: confirmationCode,
       });
       Alert.alert("Success", "Account confirmed! Please sign in.");
@@ -30,9 +30,11 @@ const ConfirmEmail = () => {
         value={confirmationCode}
         onChangeText={setConfirmationCode}
       />
-      <Pressable style={styles.button} onPress={handleConfirm}>
-        <Button title="Verify & Create" onPress={handleConfirm} />
-      </Pressable>
+      <Button
+        style={{ width: 200 }}
+        title="Verify & Create"
+        onPress={handleConfirm}
+      />
     </View>
   );
 };

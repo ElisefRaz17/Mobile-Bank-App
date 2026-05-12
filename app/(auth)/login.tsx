@@ -1,5 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Link } from "expo-router";
+import { getCurrentUser, signIn } from "aws-amplify/auth";
+import { Link, router } from "expo-router";
+import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import {
   Image,
@@ -10,10 +12,11 @@ import {
   View,
 } from "react-native";
 import z from "zod";
-import { useAuth } from "../features/auth/AuthContext";
+import { getUsersAccounts } from "../services/accountService";
 import { loginSchema } from "../utils/schemas";
 type LoginFormValues = z.infer<typeof loginSchema>;
 export default function SignIn() {
+  const [loading, setLoading] = useState(false);
   const {
     control,
     handleSubmit,
@@ -26,10 +29,34 @@ export default function SignIn() {
       password: "",
     },
   });
-  const { signIn } = useAuth();
-  const onLogin = (data: LoginFormValues) => {
-    signIn(data.username, data.password);
+  // const { signIn } = useAuth();
+  const onLogin = async (data: LoginFormValues) => {
+    try {
+      setLoading(true);
+      const { isSignedIn } = await signIn({
+        username: data.username,
+        password: data.password,
+      });
+
+      if (isSignedIn) {
+        const user = await getCurrentUser();
+        const userId = user.userId;
+        const accounts = await getUsersAccounts(userId);
+        if (accounts && accounts.length >= 1) {
+          router.replace("/(tabs)/main");
+        } else {
+          router.replace("/(tabs)/add-bank-account");
+        }
+      }
+    } catch (error) {
+      console.error("Error signing in", error);
+    } finally {
+      setLoading(false);
+    }
   };
+  if (loading) {
+    <Image source={require("../../assets/images/spinner.svg")} />;
+  }
   return (
     <View style={styles.container}>
       <Image

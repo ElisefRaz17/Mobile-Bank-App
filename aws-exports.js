@@ -1,11 +1,11 @@
 // src/aws-exports.js
-const awsConfig = {
+const AwsConfig = {
   Auth: {
     Cognito: {
-      userPoolId: 'us-east-1_BfEy1P9AR',
-      userPoolClientId: '3msvofc14vrp7av321bon77t0p',
-      region: 'us-east-1'
-    }
-  }
+      userPoolId: process.env.EXPO_PUBLIC_COGNITO_USER_POOL_ID,
+      userPoolClientId: process.env.EXPO_PUBLIC_COGNITO_CLIENT_ID,
+      region: process.env.EXPO_PUBLIC_AWS_REGION,
+    },
+  },
 };
-export default awsConfig;
+export default AwsConfig;

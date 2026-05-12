@@ -33,12 +33,13 @@ const AddBankAccount = () => {
     fetchUser();
   }, []);
 
-  const handleCreateBankAccount = async (data:any) => {
+  const handleCreateBankAccount = async (data: any) => {
+    console.log("Submitted Data", data);
     try {
       const newAccount = await addAccount({
         bankName: data.bankName,
         userId,
-        balance: data.balance,
+        balance: data.bankBalance,
         details: data.bankDetails,
       });
       Toast.show({
@@ -84,7 +85,7 @@ const AddBankAccount = () => {
             render={({ field: { onChange, onBlur, value } }) => (
               <Input
                 label="Balance"
-                value={value as any}
+                value={value as string}
                 onBlur={onBlur}
                 onChangeText={onChange}
               />
@@ -99,7 +100,7 @@ const AddBankAccount = () => {
             render={({ field: { onChange, onBlur, value } }) => (
               <Input
                 label="Bank Details like-Min, Balance, note count etc.."
-                value={value as any}
+                value={value as string}
                 onBlur={onBlur}
                 onChangeText={onChange}
               />
@@ -111,7 +112,7 @@ const AddBankAccount = () => {
 
           <Button
             title="Create"
-            onPress={handleCreateBankAccount}
+            onPress={handleSubmit(handleCreateBankAccount)}
             disabled={!isValid}
             style={!isValid && { backgroundColor: "grey" }}
           />

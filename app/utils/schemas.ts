@@ -54,12 +54,20 @@ export const addBankAccountSchema = z.object({
 export type ResetPasswordSchemaType = z.infer<typeof resetPasswordSchema>;
 
 export const addIncomeEntrySchema = z.object({
+  incomeDate: z.coerce.date().refine((date) => date instanceof Date, {
+    message: "Please select a valid date",
+  }),
+  name: z.string().min(1, "Name of Income is required"),
+
   amount: z.coerce
     .number("Amount must be a number")
     .positive("Amount must be positive")
     .multipleOf(0.01, "Maximum two decimal places allowed"),
   sourceOfIncome: z.string().min(1, "Source of Income is required"),
-  incomeCategory: z.string().min(1, "A income category needs to be selected"),
-  bankName: z.string().min(1, "A Bank needs to be selected"),
-  amountChange: z.string().min(1, "Selection is required."),
+  incomeCategory: z
+    .string({ error: "Please select a category" })
+    .min(1, "A -selection is required"),
+  amountChange: z
+    .string({ error: "Please select a choice" })
+    .min(1, "A selection is required"),
 });

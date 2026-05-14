@@ -11,7 +11,7 @@ interface MenuItemProps{
 const MenuItem:React.FC<MenuItemProps> = ({iconStart, label, subLabel, link}) => {
 
     return(
-        <Pressable style={styles.container} onPress={()=>router.push(`${link}`)}>
+        <Pressable style={styles.container} onPress={()=>link && router.push(link as any)}>
             <Image source={iconStart}/>
             <div style={styles.content}>
                 <Text style={styles.labelText}>{label}</Text>

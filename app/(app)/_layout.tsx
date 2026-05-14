@@ -1,23 +1,7 @@
 // app/(app)/_layout.tsx
-<<<<<<< HEAD
-import { Redirect, Slot, Stack } from 'expo-router';
-import { useAuth } from '../auth/AuthContext';
-
-
-
-export default function AppLayout({children}: {children: React.ReactNode}){
-
-
-  const { user, isLoading} = useAuth();
-
-  if (isLoading) return null; // Or a loading spinner
-
-  if (!user) {
-    return <Redirect href="/login" />;
-=======
 import { Hub } from "@aws-amplify/core";
 import { Redirect, router } from "expo-router";
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 import { useAuth } from "../features/auth/AuthContext";
 import { getUsersAccounts } from "../services/accountService";
 export default function AppLayout({ children }: { children: React.ReactNode }) {
@@ -45,7 +29,6 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
 
   if (!user) {
     return <Redirect href="/(auth)/login" />;
->>>>>>> develop
   }
 
   return <>{children}</>;

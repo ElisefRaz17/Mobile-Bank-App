@@ -4,7 +4,7 @@ import { PressableProps, StyleProp, ViewStyle, Text, Pressable, StyleSheet } fro
 
 interface ButtonProps extends PressableProps{
     title:string;
-    href?:Href<string>;
+    href?:Href;
     style?:StyleProp<ViewStyle>;
 }
 const Button : React.FC<ButtonProps> = ({title, href, style, ...props}) => {

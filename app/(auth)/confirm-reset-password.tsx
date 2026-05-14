@@ -1,6 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { confirmResetPassword } from "aws-amplify/auth";
 import { router, useLocalSearchParams } from "expo-router";
+import React from "react";
 import { Controller, useForm } from "react-hook-form";
 import { Pressable, StyleSheet, Text, TextInput, View } from "react-native";
 import { resetPasswordSchema } from "../utils/schemas";

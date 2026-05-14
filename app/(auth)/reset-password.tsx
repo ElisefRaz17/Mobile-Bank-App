@@ -1,6 +1,7 @@
 import { resetPassword } from "@aws-amplify/auth";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "expo-router";
+import React from "react";
 import { Controller, useForm } from "react-hook-form";
 import { Pressable, StyleSheet, Text, TextInput, View } from "react-native";
 import { forgotPasswordSchema } from "../utils/schemas";
